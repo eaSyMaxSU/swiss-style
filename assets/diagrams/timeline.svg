@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 24" role="img">
+  <title>Timeline</title>
+  <rect fill="#111111" x="0" y="11" width="360" height="2"/>
+  <rect fill="#111111" x="0" y="4" width="16" height="16"/>
+  <rect fill="#111111" x="120" y="4" width="16" height="16"/>
+  <rect fill="#DA291C" x="240" y="4" width="16" height="16"/>
+</svg>

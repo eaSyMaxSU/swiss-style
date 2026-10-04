@@ -1,0 +1,41 @@
+{
+  "$comment": "One page. The title is one to three words. Three or four figures carry the claim. The lower right of the page stays empty.",
+  "type": "object",
+  "required": ["title", "kicker", "place", "year", "metrics", "lead", "sections", "close"],
+  "properties": {
+    "title": { "type": "string", "minLength": 2, "maxLength": 40 },
+    "kicker": { "type": "string", "minLength": 2, "maxLength": 80 },
+    "place": { "type": "string", "minLength": 2, "maxLength": 40 },
+    "year": { "type": "string", "minLength": 4, "maxLength": 12 },
+    "metrics": {
+      "$comment": "Three or four true figures. The number is the content; the label only names the unit.",
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["value", "label"],
+        "properties": {
+          "value": { "type": "string", "minLength": 1, "maxLength": 12 },
+          "label": { "type": "string", "minLength": 1, "maxLength": 32 }
+        }
+      }
+    },
+    "lead": { "type": "string", "minLength": 40, "maxLength": 320 },
+    "sections": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["index", "heading", "body"],
+        "properties": {
+          "index": { "type": "string", "minLength": 2, "maxLength": 4 },
+          "heading": { "type": "string", "minLength": 2, "maxLength": 40 },
+          "body": { "type": "string", "minLength": 20, "maxLength": 400 }
+        }
+      }
+    },
+    "close": { "type": "string", "minLength": 4, "maxLength": 160 }
+  }
+}

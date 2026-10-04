@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- EQUITY · EN · never invent a price. Write [DATA NEEDED: price] and report the gap. Copy this file and swiss.css into the working directory. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{DOC_TITLE}}</title>
+<meta name="author" content="{{AUTHOR}}">
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="keywords" content="{{KEYWORDS}}">
+<meta name="generator" content="Swiss Style">
+<link rel="stylesheet" href="swiss.css">
+</head>
+<body>
+
+<header class="g">
+  <p class="s1 w3 index red">{{TICKER}}</p>
+  <p class="s8 w5 meta">{{PLACE}}<br>{{DATE}}</p>
+  <h1 class="s1 w9 display mt-2">{{NAME}}</h1>
+  <p class="s1 w7 lead mt-2">{{THESIS}}</p>
+</header>
+<div class="g mt-3">
+  <div class="s1 w3"><p class="figure">{{METRIC_1}}</p><p class="meta mt-1">{{METRIC_1_LABEL}}</p></div>
+  <div class="s4 w3"><p class="figure">{{METRIC_2}}</p><p class="meta mt-1">{{METRIC_2_LABEL}}</p></div>
+  <div class="s7 w3"><p class="figure">{{METRIC_3}}</p><p class="meta mt-1">{{METRIC_3_LABEL}}</p></div>
+</div>
+<section class="g band">
+  <h2 class="s1 w2 index">01</h2>
+  <div class="s3 w8">
+    <p class="heading">{{TABLE_TITLE}}</p>
+    <table class="mt-1">
+      <thead><tr><th>{{COL_1}}</th><th>{{COL_2}}</th><th>{{COL_3}}</th></tr></thead>
+      <tbody>
+        <tr><td>{{CELL_1}}</td><td>{{CELL_2}}</td><td>{{CELL_3}}</td></tr>
+        <tr><td>{{CELL_4}}</td><td>{{CELL_5}}</td><td>{{CELL_6}}</td></tr>
+      </tbody>
+    </table>
+    <p class="meta mt-1">{{SOURCE}}</p>
+  </div>
+</section>
+<section class="g band">
+  <h2 class="s1 w2 index">02</h2>
+  <div class="s3 w7">
+    <p class="heading">Catalysts</p>
+    <p class="mt-1">{{CATALYST_1}}</p>
+    <p>{{CATALYST_2}}</p>
+  </div>
+</section>
+<section class="g band">
+  <h2 class="s1 w2 index">03</h2>
+  <div class="s3 w7">
+    <p class="heading">Risks</p>
+    <p class="mt-1">{{RISK_1}}</p>
+    <p>{{RISK_2}}</p>
+  </div>
+</section>
+
+</body>
+</html>

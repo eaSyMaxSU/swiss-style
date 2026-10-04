@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" role="img">
+  <title>Bars</title>
+  <rect fill="#111111" x="0" y="48" width="48" height="48"/>
+  <rect fill="#111111" x="64" y="28" width="48" height="68"/>
+  <rect fill="#DA291C" x="128" y="8" width="48" height="88"/>
+  <rect fill="#111111" x="192" y="36" width="48" height="60"/>
+</svg>
