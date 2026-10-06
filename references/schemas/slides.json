@@ -1,5 +1,5 @@
 {
-  "$comment": "One assertion per slide, set large and flush left. At most four support lines. The rest of the slide is empty paper.",
+  "$comment": "The slides array includes the title slide, whose assertion is the short deck title. One assertion per following slide, set large and flush left. At most four support lines. The rest of the slide is empty paper.",
   "type": "object",
   "required": ["title", "place", "year", "slides"],
   "properties": {
@@ -15,7 +15,7 @@
         "required": ["index", "assertion"],
         "properties": {
           "index": { "type": "string", "minLength": 2, "maxLength": 4 },
-          "assertion": { "type": "string", "minLength": 8, "maxLength": 140 },
+          "assertion": { "type": "string", "minLength": 2, "maxLength": 140 },
           "support": { "type": "string", "maxLength": 280 },
           "points": {
             "type": "array",

@@ -6,13 +6,11 @@ Implementation of the visual law in `SKILL.md`. Tokens live in `references/token
 
 | Surface | Size | Margin |
 |---|---|---|
-| Document | A4 | 14mm, 14mm, 16mm, 14mm |
 | Slide | 338.67mm × 190.5mm | 12mm, 14mm |
-| Landing | max 1180px, flush left | 28px 32px 64px |
 
-The sheet sits flush left on screen. Type is never centered inside it. The folio is `01`, `02` in the bottom-left margin, 8pt bold. Slides have no folio; the slide carries its own number.
+The slide sits flush left on screen. Type is never centered inside it. Slides have no folio; each slide carries its own number (`01`, `02`).
 
-Content width on A4 is 182mm. Twelve columns and eleven 4mm gutters leave about 11.5mm per column.
+Content width is 310.67mm. Twelve columns and eleven 4mm gutters leave about 22.2mm per column.
 
 ## Vertical module
 
@@ -24,15 +22,13 @@ Content width on A4 is 182mm. Twelve columns and eleven 4mm gutters leave about 
 - Put the year and place in a right-hand column, still flush left inside that column.
 - One red per kind of mark on a page: the opening index, or a rule, or one flat block. Do not paint every heading red.
 - A black or red rectangle is a flat fill, edge to edge of its columns. No padding on the left, so the type above and the type inside share a column line.
-- Below 721px a landing page becomes four columns and every block spans them. Print pages do not collapse.
+- Slides keep their fixed 16:9 canvas on screen and in print; the grid does not collapse on narrow screens.
 
 ## Type
 
 Registered sizes are the `font_sizes` list in `tokens.json`. The checker rejects any other `font-size`.
 
 Tracking: display Latin −0.04em, display Chinese 0, meta 0.14em, body 0. Uppercase is for `.meta` only.
-
-Screen landing sizes, because 8.5pt is too small to read in a browser: display 104px, lead 16px, body 13px, meta 11px. Below 721px the display drops to 56px. The contrast stays large.
 
 ## Images
 

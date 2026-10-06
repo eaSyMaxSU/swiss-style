@@ -8,10 +8,10 @@ Fields:
 
 | Field | Effect |
 |---|---|
-| `name` | Author, sender, or product when the user did not give one |
+| `name` | Presenter or product when the user did not give one |
 | `place` | The small place line |
 | `year` | The small year line |
-| `url` | Contact line |
+| `url` | Source or contact detail only when the presentation calls for it; not a repeating footer |
 | `logo` | A local image path |
 
 The logo, when used, is `<img class="photo">` or a flat SVG in the palette, placed in a column, flush left. Do not center it. Do not recolor the page to match a brand guide. `#DA291C` stays unless the user explicitly orders a different accent in this conversation. If they do, say so as an explicit deviation in `brief`, and do not silently spread a second color through the templates.

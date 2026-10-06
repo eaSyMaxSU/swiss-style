@@ -21,8 +21,8 @@
 19. Letter-spacing on body copy.
 20. A serif "for elegance", a script sign-off, or a monospace display.
 21. A chart with a legend centered under it, gridlines in gray, or more than one hue.
-22. Opening a letter or a paper with "I am writing to".
-23. A resume bullet that names a responsibility and no result.
+22. Opening with context instead of the presentation's claim.
+23. A support point that names an activity and no result.
 24. A slide whose title is a topic ("Q3 Update") instead of a claim.
 25. Three identical feature cards.
 26. A decorative rule that does not separate two blocks.

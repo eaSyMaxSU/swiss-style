@@ -1,0 +1,39 @@
+{
+  "type": "slides",
+  "lang": "en",
+  "brief": {
+    "audience": "A person commissioning a presentation",
+    "job": "Show the grid, the two weights, and the three colors",
+    "template": "slides",
+    "formats": ["html", "pdf"],
+    "page_target": 3,
+    "narrative": "Name the grid, explain alignment, then state the visual limits",
+    "required_facts": ["12 columns", "two weights", "#DA291C"],
+    "required_assets": [],
+    "acceptance_checks": ["three slides", "16:9", "flush left", "palette only"],
+    "preserve": [],
+    "explicit_deviations": []
+  },
+  "content": {
+    "title": "The Grid",
+    "place": "Zurich",
+    "year": "2026",
+    "slides": [
+      { "index": "01", "assertion": "The Grid" },
+      {
+        "index": "02",
+        "assertion": "Every edge sits on the grid.",
+        "support": "12 columns, four-millimetre gutters. Text is flush left and ragged right."
+      },
+      {
+        "index": "03",
+        "assertion": "Fewer choices make the claim clear.",
+        "points": [
+          "Use two weights: regular and bold.",
+          "Use black, rice-white, and one red, #DA291C.",
+          "Leave a field of the slide empty."
+        ]
+      }
+    ]
+  }
+}

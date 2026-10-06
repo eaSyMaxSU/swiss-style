@@ -36,17 +36,10 @@ body {
 }
 
 @page {
-  size: A4;
-  margin: 14mm 14mm 16mm 14mm;
+  size: 338.67mm 190.5mm;
+  margin: 12mm 14mm;
   background: #F4F1EA;
-  @bottom-left {
-    content: counter(page, decimal-leading-zero);
-    font-family: Inter, "Neue Haas Grotesk Text Pro", "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 8pt;
-    font-weight: 700;
-    color: #111111;
-    letter-spacing: 0.08em;
-  }
+  @bottom-left { content: none; }
 }
 
 @page deck {
@@ -54,17 +47,6 @@ body {
   margin: 12mm 14mm;
   background: #F4F1EA;
   @bottom-left { content: none; }
-}
-
-@media screen {
-  html:not(.deck) body:not(.screen) {
-    max-width: 210mm;
-    padding: 14mm 14mm 16mm;
-  }
-}
-
-@media print {
-  html:not(.deck) body { padding: 0; max-width: none; }
 }
 
 ::selection { background: #DA291C; color: #F4F1EA; }
@@ -160,7 +142,6 @@ p + p { margin-top: 2mm; }
 .spacer-l { height: 40mm; }
 .end { align-self: end; }
 .pack-end { align-content: end; }
-.break { break-before: page; }
 
 .rule, hr {
   width: 100%;
@@ -201,9 +182,6 @@ th, td {
 th { font-weight: 700; border-bottom: 0.8pt solid var(--ink); }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
-nav a { display: block; margin: 0 0 2mm; }
-a.on { color: var(--red); font-weight: 700; }
-
 html.deck { page: deck; }
 html.deck .slide {
   page: deck;
@@ -213,6 +191,8 @@ html.deck .slide:last-child { break-after: auto; }
 
 @media print {
   html.deck .slide { height: 166.5mm; }
+  /* Keep tight display glyphs inside the bottom-packed title slide. */
+  html.deck .slide.pack-end { padding-bottom: 4mm; }
 }
 @media screen {
   html.deck, html.deck body {
@@ -229,31 +209,4 @@ html.deck .slide:last-child { break-after: auto; }
     padding: 12mm 14mm;
     margin: 0 0 8mm;
   }
-}
-
-body.screen {
-  font-size: 13px;
-  line-height: 1.45;
-  max-width: 1180px;
-  padding: 28px 32px 64px;
-}
-body.screen .g { column-gap: 16px; }
-body.screen .meta,
-body.screen figcaption { font-size: 11px; }
-body.screen .lead { font-size: 16px; line-height: 1.4; }
-body.screen .display,
-body.screen h1.display { font-size: 104px; line-height: 0.84; }
-body.screen .figure { font-size: 56px; }
-body.screen .index-xl { font-size: 88px; }
-
-@media screen and (max-width: 720px) {
-  body.screen { padding: 20px 16px 48px; }
-  body.screen .g { column-gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  body.screen .g > * { grid-column: 1 / -1; }
-  body.screen .display,
-  body.screen h1.display { font-size: 56px; }
-}
-
-@media print {
-  body.screen { padding: 0; max-width: none; }
 }

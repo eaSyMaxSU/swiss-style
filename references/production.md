@@ -13,7 +13,7 @@ If neither renderer exists, the HTML can still be `READY`, with `WARN: no pdf re
 
 ## Page size
 
-Documents are A4 (about 595 × 842 pt). Slides are 13.333 × 7.5 in (about 960 × 540 pt). A `WARN` on the media box means the `@page` override did not win. Slides include a second `@page` rule for that reason. Do not "fix" it by scaling the type.
+Slides are 13.333 × 7.5 in (about 960 × 540 pt). A `WARN` on the media box means the `@page` override did not win. Slides include a second `@page` rule for that reason. Do not "fix" it by scaling the type.
 
 ## Fonts
 
@@ -34,4 +34,4 @@ The stack is Inter, Neue Haas Grotesk, Helvetica Neue, Helvetica, then PingFang 
 
 ## Screen
 
-Landing pages are not printed by `--deliver`. Open the HTML at a wide width and at a width under 721px. Confirm the blocks stack flush left and the display is still much larger than the body.
+Open the HTML and inspect the title slide, assertion slide, and numbered-points slide. The canvas stays 16:9, with flush-left text and empty paper. Check every PDF page for clipping, overflow, and trailing blank slides.

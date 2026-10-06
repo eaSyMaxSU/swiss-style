@@ -18,8 +18,8 @@ Grotesque only: Inter, Neue Haas Grotesk, Helvetica Neue, Helvetica. Weights 400
 
 | Class | Size | Weight | Use |
 |---|---|---|---|
-| `.display` | 76pt | 700 | Poster title, 1–3 words |
-| `h1`, `.display.m` | 44pt | 700 | Name, assertion, version |
+| `.display` | 76pt | 700 | Deck title, 1–3 words |
+| `h1`, `.display.m` | 44pt | 700 | Slide assertion |
 | `.index-xl` | 88pt | 700 | Slide number |
 | `.figure` | 36pt | 700 | Metric or chapter number |
 | `.heading`, `h2` | 14pt | 700 | Section title |
@@ -28,17 +28,18 @@ Grotesque only: Inter, Neue Haas Grotesk, Helvetica Neue, Helvetica. Weights 400
 | body | 8.5pt | 400 | Reading text |
 | `.meta` | 7.5pt | 400 | Year, place, source |
 
-Screen landing pages step up to 104px / 16px / 13px / 11px. Do not invent a size between these.
+Do not invent a size between these.
 
 Chinese display titles do not use negative tracking. Body tracking stays 0.
 
 ## Grid
 
-12 columns. Gutter 4mm. A4 margins 14mm, 14mm, 16mm, 14mm.
+12 columns. Gutter 4mm. Slide size 338.67mm × 190.5mm (16:9), margins 12mm vertically and 14mm horizontally.
 
 | Class | Meaning |
 |---|---|
-| `.g` | The grid. Never nest it. Never put `s` or `w` on it |
+| `.slide` | The slide grid. Never nest grids. Never put `s` or `w` on it |
+| `.g` | A standalone grid. Never nest it inside a slide or another grid |
 | `.s1`–`.s12` | Start column |
 | `.w1`–`.w12` | Span. `start + span - 1` must be ≤ 12 |
 | `.mt-1` … `.mt-4` | 4 / 8 / 16 / 28mm above |
@@ -46,7 +47,6 @@ Chinese display titles do not use negative tracking. Body tracking stays 0.
 | `.rule` | Hairline inside a cell. A full rule is `s1 w12 rule` |
 | `.end` | Sit on the bottom of the row |
 | `.spacer`, `.spacer-l` | 16mm / 40mm of empty paper |
-| `.break` | Next page. Use only when the page is already full |
 | `.pack-end` | Pack a slide's rows to the bottom |
 | `.bg-ink`, `.bg-red` | Flat rectangle |
 | `.h-s` … `.h-xl` | 24 / 48 / 80 / 110mm |

@@ -1,9 +1,11 @@
 ---
 name: swiss-style
-description: "Typeset print and static pages in the Swiss International Typographic Style (瑞士国际主义 / International Typographic Style): a 12-column grid, Helvetica or Neue Haas Grotesk or Inter, weights 400 and 700 only, black, rice-white, and #DA291C. Use when the user asks for Swiss Style, 瑞士风格, a grid poster, or to make a resume, one-pager, letter, portfolio, long document, equity note, changelog, slides, or landing page (PDF, 排版, 简历, 一页纸, 信件, 作品集, 白皮书, PPT, 落地页)."
+description: "Creates presentations in the Swiss International Typographic Style (瑞士国际主义 / International Typographic Style): a 12-column grid, Helvetica or Neue Haas Grotesk or Inter, weights 400 and 700 only, black, rice-white, and #DA291C. Use for Swiss-style presentations, slide decks, slides, PPT, 演示文稿, or 幻灯片, delivered as HTML and PDF. Not for posters, resumes, documents, landing pages, or product UI."
 ---
 
 # Swiss Style
+
+This skill is for presentations only. Use it to create or revise slide decks, not standalone documents or websites.
 
 用瑞士国际主义风格（Swiss Style / International Typographic Style）设计。12 栏模块化网格，所有元素的边缘都对齐到网格线。字体用新怪诞无衬线体（Helvetica、Neue Haas Grotesk 或 Inter），只用常规和粗体两种字重；标题极大、正文很小，形成强烈的大小对比。文字一律左对齐、右边不齐，不要居中，也不要两端对齐。不对称构图，留出大面积空白。配色只用黑、米白和一个强调红（#DA291C），全部平涂，不要阴影、渐变、纹理和装饰插画。需要图片时用黑白照片或简单几何形。用细线分隔区块，用 01、02 这样的编号和小号的年份、地点信息点缀。
 
@@ -19,7 +21,7 @@ Before creating or changing an output, lock language, template, formats, page ta
 
 | Task | What to do |
 |---|---|
-| New document | Write `content.json`, fill a template, deliver |
+| New presentation | Write `content.json`, fill a slide template, deliver |
 | Factual correction | Change copy. Leave the CSS alone |
 | Visual rejection | Name the defect from the render, then change the smallest class or the copy |
 | Diagram or photo | Black-and-white photo, or a geometric SVG from `references/diagrams.md` |
@@ -28,29 +30,15 @@ Before creating or changing an output, lock language, template, formats, page ta
 
 | User | Template |
 |---|---|
-| Chinese | `*.html` |
-| English | `*-en.html` |
-| Japanese, Korean, other | `*-en.html`, set `lang`, then look at the pages. CJK falls through the sans stack |
+| Chinese | `slides.html` |
+| English | `slides-en.html` |
+| Japanese, Korean, other | `slides-en.html`, set `lang`, then look at the slides. CJK falls through the sans stack |
 
-### Document
+### Presentation
 
-| User says | Document | CN | EN | Pages |
-|---|---|---|---|---|
-| one-pager / 方案 / 执行摘要 | one-pager | `one-pager.html` | `one-pager-en.html` | 1 |
-| white paper / 白皮书 / 长文 | long-doc | `long-doc.html` | `long-doc-en.html` | 6–15 |
-| letter / 信件 / 辞职信 / memo | letter | `letter.html` | `letter-en.html` | 1 |
-| portfolio / 作品集 | portfolio | `portfolio.html` | `portfolio-en.html` | 3–6 |
-| resume / CV / 简历 | resume | `resume.html` | `resume-en.html` | 2 |
-| slides / PPT / deck / 演示 | slides | `slides.html` | `slides-en.html` | one assertion each |
-| equity / 研报 / 估值 | equity-report | `equity-report.html` | `equity-report-en.html` | 2–4 |
-| changelog / 更新日志 | changelog | `changelog.html` | `changelog-en.html` | as long as the versions |
-| landing / 落地页 / 产品页 | landing-page | `landing-page.html` | `landing-page-en.html` | screen |
+Use `slides.html` or `slides-en.html` for slides / PPT / deck / 演示文稿 / 幻灯片. Each slide carries one assertion. Lock a slide count, including the title slide, and use a 16:9 canvas (338.67mm × 190.5mm).
 
-Signals: one page for an investor or an executive → one-pager. Formal correspondence → letter. Two pages of career evidence → resume. Visual cases → portfolio. A sustained argument → long-doc. One assertion per slide → slides. Thesis, catalysts, and risks → equity-report. Version facts → changelog. A browser product page → landing-page.
-
-Slides are HTML + PDF. There is no PPTX path. A deck that can be restyled in PowerPoint will not hold this grid.
-
-Landing pages are HTML only. The 12 columns collapse to full-width blocks below 721px. See `references/design.md`.
+Slides are HTML + PDF. There is no PPTX path. If the user requires an editable PowerPoint file, explain that this skill cannot produce it.
 
 ## 2. Sources and content
 
@@ -62,16 +50,16 @@ Write `content.json` beside the HTML:
 
 ```json
 {
-  "type": "one-pager",
+  "type": "slides",
   "lang": "en",
   "brief": {
-    "audience": "Who reads it",
-    "job": "What the page must do",
-    "template": "one-pager",
+    "audience": "Who watches it",
+    "job": "What the presentation must do",
+    "template": "slides",
     "formats": ["html", "pdf"],
-    "page_target": 1,
+    "page_target": 3,
     "narrative": "Order of the argument",
-    "acceptance_checks": ["one page", "flush left"],
+    "acceptance_checks": ["three slides", "one assertion per slide", "flush left"],
     "required_facts": [],
     "required_assets": [],
     "preserve": [],
@@ -81,15 +69,14 @@ Write `content.json` beside the HTML:
 }
 ```
 
-`type` is a file in `references/schemas/`. Read that schema, including `$comment`, before writing `content`. Validate with `python3 scripts/build.py --check-content content.json`. Strings in `content` must appear verbatim in the filled HTML. If a real field does not fit, change the schema, the template, and `references/writing.md` together. Do not drop a field to silence the checker.
+`type` and `brief.template` must be `slides`. Read `references/schemas/slides.json`, including `$comment`, before writing `content`. The `content.slides` array includes the title slide: use the short deck title as its assertion. `brief.page_target` must equal the array length. Validate with `python3 scripts/build.py --check-content content.json`. Strings in `content` must appear verbatim in the filled HTML. If a real field does not fit, change the schema, the template, and `references/writing.md` together. Do not drop a field to silence the checker.
 
 ## 3. What to read
 
 | Task | Read |
 |---|---|
 | Fill a template | `CHEATSHEET.md`, the template, the schema |
-| New document | those, plus the type's section in `references/writing.md` |
-| Slides | also `references/deck-preflight.md` |
+| New presentation | those, plus `references/writing.md` and `references/deck-preflight.md` |
 | Diagram | `references/diagrams.md` |
 | Render or font failure | `references/production.md` |
 | Reviewing a draft | `references/anti-patterns.md` |
@@ -107,7 +94,7 @@ Photographs use `class="photo"` and a factual alt. The stylesheet forces them to
 
 Fill the four meta tags from the document. Keep `<meta name="generator" content="Swiss Style">`.
 
-Formats: HTML + PDF, unless the user names one. Landing page: HTML only. Add a PNG when the user asks to share or embed.
+Formats: HTML + PDF, unless the user names one. Add a PNG when the user asks to share or embed.
 
 ## 5. Deliver
 
@@ -134,6 +121,8 @@ Name the defect in one sentence: grid, type size, weight, alignment, color, crow
 
 ## When not to use this skill
 
+- The output is not a presentation: posters, resumes, one-pagers, letters, portfolios, long documents, equity notes, changelogs, and landing pages are out of scope.
+- The user requires a native, editable PPTX file.
 - The user wants Kami, parchment, a serif, or ink blue.
 - The user names another design system.
 - The job is a product UI, a dashboard, or a restyle of an existing site.

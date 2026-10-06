@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check and render a Swiss Style document.
+"""Check and render a Swiss Style presentation.
 
     python3 scripts/build.py --check
     python3 scripts/build.py --doctor
@@ -27,9 +27,8 @@ TEMPLATES = ROOT / "assets" / "templates"
 SCHEMAS = ROOT / "references" / "schemas"
 TOKENS_PATH = ROOT / "references" / "tokens.json"
 DIAGRAMS = ROOT / "assets" / "diagrams"
-EXAMPLE = ROOT / "examples" / "one-pager"
+EXAMPLE = ROOT / "examples" / "slides"
 
-A4 = (595.28, 841.89)
 DECK = (959.98, 540.0)
 
 FORBIDDEN = [
@@ -232,10 +231,8 @@ def lint_document(path: Path, tokens: dict, template: bool) -> list[str]:
         errors.append(f"{path.name}: template is missing placeholders")
     if not template and "{{" in stripped:
         errors.append(f"{path.name}: leftover placeholder")
-    if path.name.startswith("slides") and 'class="deck"' not in html:
+    if not any("deck" in class_list(attrs) for attrs in re.findall(r"<html\b([^>]*)>", stripped, flags=re.I)):
         errors.append(f"{path.name}: slides use html class deck")
-    if path.name.startswith("landing") and 'class="screen"' not in html:
-        errors.append(f"{path.name}: landing pages use body class screen")
     visible = visible_text(html)
     if re.search(r"(?m)^\s{0,3}#{1,6}\s", visible) or "**" in visible or "__" in visible:
         errors.append(f"{path.name}: markdown residue")
@@ -267,7 +264,7 @@ def check_tree(tokens: dict) -> list[str]:
     if DIAGRAMS.exists():
         for path in sorted(DIAGRAMS.glob("*.svg")):
             errors.extend(lint_style(path.read_text(encoding="utf-8"), path.name, tokens))
-    example_html = EXAMPLE / "one-pager.html"
+    example_html = EXAMPLE / "slides.html"
     if example_html.exists():
         errors.extend(lint_document(example_html, tokens, template=False))
     return dedupe(errors)
@@ -348,6 +345,8 @@ def check_content(path: Path, html: Path | None = None) -> tuple[list[str], list
             errors.append(f"envelope missing {key}")
     if errors:
         return errors, warnings
+    if data["type"] != "slides":
+        return ["type must be slides; this skill supports presentations only"], warnings
     if not isinstance(data["lang"], str) or not data["lang"].strip():
         errors.append("lang is empty")
     brief = data["brief"]
@@ -356,20 +355,22 @@ def check_content(path: Path, html: Path | None = None) -> tuple[list[str], list
     for key in BRIEF_REQUIRED:
         if key not in brief:
             errors.append(f"brief.{key} missing")
-    if isinstance(brief.get("template"), str) and brief["template"] != data["type"]:
-        errors.append("brief.template does not match type")
+    if brief.get("template") != "slides":
+        errors.append("brief.template must be slides")
     formats = brief.get("formats", [])
     if not isinstance(formats, list) or not formats or any(item not in {"html", "pdf", "png"} for item in formats):
         errors.append("brief.formats must list html, pdf, or png")
     page_target = brief.get("page_target")
-    if not isinstance(page_target, int) and page_target != "screen":
-        errors.append("brief.page_target should be an integer or screen")
+    if type(page_target) is not int or page_target < 1:
+        errors.append("brief.page_target should be a positive slide count")
     schema_path = SCHEMAS / f"{data['type']}.json"
     if not schema_path.exists():
         errors.append(f"no schema for {data['type']}")
         return errors, warnings
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     errors.extend(validate_instance(data["content"], schema, "content"))
+    if not errors and len(data["content"]["slides"]) != page_target:
+        errors.append("brief.page_target must match content.slides, including the title slide")
     if html is not None:
         if not html.exists():
             errors.append(f"missing {html}")
@@ -504,8 +505,7 @@ def deliver(html_path: Path, content_path: Path) -> int:
     for word in warnings_in(html):
         print(f"WARN: residue {word}")
     data = load_json(content_path) if content_path.exists() else {}
-    screen = isinstance(data.get("brief"), dict) and data["brief"].get("page_target") == "screen"
-    if not errors and not screen:
+    if not errors:
         pdf = html_path.with_suffix(".pdf")
         try:
             engine = render_pdf(html_path, pdf)
@@ -520,7 +520,7 @@ def deliver(html_path: Path, content_path: Path) -> int:
             count = pdf_pages(pdf)
             boxes = pdf_boxes(pdf)
             print(f"PDF: {pdf} via {engine}, {count} page(s)")
-            expect = DECK if 'class="deck"' in html else A4
+            expect = DECK
             for box in boxes:
                 if not close_box(box, expect) and not close_box((box[1], box[0]), expect):
                     print(f"WARN: page box {box[0]:.1f}x{box[1]:.1f} pt, expected {expect[0]:.0f}x{expect[1]:.0f}")
@@ -576,13 +576,37 @@ def self_test() -> int:
     if errors:
         print("FAILED")
         return 1
-    content_errors, _ = check_content(EXAMPLE / "content.json", EXAMPLE / "one-pager.html")
+    content_errors, _ = check_content(EXAMPLE / "content.json", EXAMPLE / "slides.html")
     for error in content_errors:
         print(f"ERROR: {error}")
     if content_errors:
         print("FAILED")
         return 1
-    code = deliver(EXAMPLE / "one-pager.html", EXAMPLE / "content.json")
+    with tempfile.TemporaryDirectory(prefix="swiss-style-check-") as tmp:
+        path = Path(tmp) / "content.json"
+        for kind in ("one-pager", "resume", "letter", "portfolio", "long-doc", "equity-report", "changelog", "landing-page"):
+            data = load_json(EXAMPLE / "content.json")
+            data["type"] = data["brief"]["template"] = kind
+            path.write_text(json.dumps(data), encoding="utf-8")
+            rejected, _ = check_content(path)
+            if not any("presentations only" in error for error in rejected):
+                print(f"ERROR: accepted non-presentation type {kind}")
+                return 1
+        for target in ("screen", 0, True, 2, 4):
+            data = load_json(EXAMPLE / "content.json")
+            data["brief"]["page_target"] = target
+            path.write_text(json.dumps(data), encoding="utf-8")
+            rejected, _ = check_content(path)
+            if not any("brief.page_target" in error for error in rejected):
+                print(f"ERROR: accepted invalid slide count {target}")
+                return 1
+        html_path = Path(tmp) / "filled.html"
+        html = (EXAMPLE / "slides.html").read_text(encoding="utf-8")
+        html_path.write_text(html.replace('class="deck"', ''), encoding="utf-8")
+        if not any("html class deck" in error for error in lint_document(html_path, tokens, template=False)):
+            print("ERROR: accepted a filled document without html class deck")
+            return 1
+    code = deliver(EXAMPLE / "slides.html", EXAMPLE / "content.json")
     if code != 0:
         return code
     print("SELF-TEST OK")
@@ -590,7 +614,7 @@ def self_test() -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check and render a Swiss Style document.")
+    parser = argparse.ArgumentParser(description="Check and render a Swiss Style presentation.")
     parser.add_argument("--check", action="store_true", help="lint templates, diagrams, tokens, and the specimen")
     parser.add_argument("--doctor", action="store_true", help="report the renderer and fonts")
     parser.add_argument("--self-test", action="store_true", help="lint, then deliver the specimen")
